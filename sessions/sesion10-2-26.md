@@ -8,7 +8,7 @@
 
 
 ## what i understood
-
+I learn to do a pull request
 
 
 ## what is still confusing
