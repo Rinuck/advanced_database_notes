@@ -8,7 +8,7 @@ Practice the use of
     ORDER
     LIMIT
     BETWEN
-    
+    LIKE
 
 
 
