@@ -3,16 +3,21 @@
 
 
 ## Sql overview
-
+Practice the use of 
+    SELECT
+    ORDER
+    LIMIT
+    BETWEN
+    
 
 
 
 ## what i understood
 I learn to do a pull request
-
+I practice my sql skills
 
 ## what is still confusing
-
+Sometimes, i dont understand when use "like" or "equal" by selecting a specific column
 
 
 ## Questions
@@ -24,6 +29,7 @@ I learn to do a pull request
 
 
 ## Resources Used
-
+Github
+SqlBolt
 
 
