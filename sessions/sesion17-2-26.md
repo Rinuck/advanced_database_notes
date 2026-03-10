@@ -1,5 +1,9 @@
 # Session 2026-2-17
 
+# Topics covered
+Multi-table queries with JOINs (JOIN, INNER JOIN)
+OUTER JOINs (LEFT JOIN, RIGHT JOIN, FULL JOIN)
+CROSS JOIN, SELF JOIN
 
 
 ## Sql overview

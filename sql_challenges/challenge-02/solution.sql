@@ -4,7 +4,7 @@
 Find the domestic and international sales for each movie
 
 ## Schema
-```sql
+
 SELECT title, domestic_sales, international_sales 
 FROM movies
   JOIN boxoffice
@@ -64,7 +64,7 @@ FROM buildings
 
 ## Problem
 
-Assume you're given two tables containing data about Facebook Pages and their respective likes (as in "Like a Facebook Page").
+Assume youre given two tables containing data about Facebook Pages and their respective likes (as in "Like a Facebook Page").
 
 Write a query to return the IDs of the Facebook pages that have zero likes. The output should be sorted in ascending order based on the page IDs.
 
