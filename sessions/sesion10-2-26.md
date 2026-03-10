@@ -1,6 +1,10 @@
 # Session 2026-2-10
 
-
+## Topics covered
+-Select queries
+-Queries with constraints
+-Pattern matching
+-Filtering and sorting
 
 ## Sql overview
 Practice the use of 
@@ -22,7 +26,7 @@ Sometimes, i dont understand when use "like" or "equal" by selecting a specific 
 
 ## Questions
 
-
+No quiesions
 
 ## Related concepts
 
