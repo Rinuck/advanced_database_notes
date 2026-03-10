@@ -30,7 +30,7 @@ No quiesions
 
 ## Related concepts
 
-
+No
 
 ## Resources Used
 Github
