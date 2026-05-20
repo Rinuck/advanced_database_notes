@@ -1,26 +1,33 @@
-# Session 2026-2-26
+# Session 2026-04-07
 
 ## Topics covered
-- SELECT, WHERE, LIKE, ORDER BY, LIMIT
 - Vector Search with Oracle 23ai
-- VECTOR_DISTANCE for semantic similarity
+- Vector embeddings (text to numbers)
+- Cosine similarity
+- Semantic search vs keyword search
 
 ## SQL overview
-SELECT, ORDER BY, LIMIT, BETWEEN, LIKE, VECTOR_DISTANCE, TO_VECTOR
+Practice the use of:
+- CREATE TABLE with VECTOR data type
+- INSERT with TO_VECTOR
+- VECTOR_DISTANCE(..., COSINE)
+- FETCH FIRST N ROWS ONLY
 
 ## What I understood
-- Vector search finds by **meaning**, not keywords
-- Score near 0 = very similar / Score near 1 = very different
-- How to generate embeddings and load them into Oracle 23ai
+- Vector search finds by MEANING, not keywords
+- Score near 0 = very similar
+- Score near 1 = very different
+- Generate embeddings with SentenceTransformer
+- Load vectors into Oracle using TO_VECTOR
 
 ## What is still confusing
-- LIKE vs = (answer: = for exact value, LIKE for patterns with %)
+- When to use LIKE vs = (answer: = for exact value, LIKE for patterns with %)
 
 ## Questions
 None
 
 ## Related concepts
-None
+No
 
 ## Resources Used
-GitHub, SQLBolt, Google Colab, Oracle 23ai
+Google Colab, Wikipedia API, SentenceTransformers, Oracle 23ai, freesql.com
