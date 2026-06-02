@@ -10,7 +10,7 @@ Low cardinality.
 **c) Would adding an index on site_id help? Why or why not?**  
 No, because each value returns about 20,000 rows (~20% of the table). Oracle would still choose a Full Table Scan.
 
----
+--
 
 ### Exercise 2 — Create an index and see if it helps
 

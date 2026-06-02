@@ -7,7 +7,7 @@ SELECT * FROM patient_visits WHERE site_id = 3;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY());
 ```
 
----
+--
 
 ## Exercise 2
 
