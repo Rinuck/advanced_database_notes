@@ -12,5 +12,5 @@ Exercise 5: Discussion (Q1, Q2, Q3)
 
 Stored Procedure: transfer_funds
 
-Function Example: get_balance
+Function Example: get_balanc
 
