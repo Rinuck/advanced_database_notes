@@ -1,5 +1,0 @@
-Today's Challenge
---  — Indexes: Setu
--- Creates the patient_visits table and populates 100,000 rows
--- Run this once before the other scripts
--- Oracle 23ai / freesql.com
