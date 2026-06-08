@@ -1,0 +1,10 @@
+- user_objects
+- DBMS_METADATA.GET_DDL
+- SET_TRANSFORM_PARAM
+- EMIT_SCHEMA
+- user_tables / user_indexes / user_views / user_sequences / user_constraints
+- user_dependencies
+- LISTAGG
+- Orden de exportación y recarga
+- expdp vs DBMS_METADATA
+- Dependencias circulares
