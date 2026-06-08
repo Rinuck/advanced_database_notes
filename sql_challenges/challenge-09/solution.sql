@@ -17,9 +17,9 @@ INSERT INTO accounts VALUES (3, 'Charlie', 250.00);
 COMMIT;
 
 SELECT account_id, owner_name, balance FROM accounts ORDER BY account_id;
-```
+`
 
---
+
 
 ## Exercise 1: Manual transaction (warm-up)
 Transfer $50 from Charlie (3) to Alice (1)
