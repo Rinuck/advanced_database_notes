@@ -1,44 +1,122 @@
-## Ejercicio 1: Preguntas
+# Lesson 03 Exercises - SQLAlchemy ORM + Alembic
 
-**Modelo Comment**
-- Relaciones: Task y User (cada comentario pertenece a una tarea y a un usuario)
-- Task debe tener relación `comments` (una tarea puede tener muchos comentarios)
-- Al eliminar una tarea, los comentarios se eliminan automáticamente (`ondelete="CASCADE"`)
+## Exercise 1 & 2: Comment Model and Migration
 
-## Ejercicio 2: Preguntas
+```python
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, func, CheckConstraint
+from sqlalchemy.orm import relationship
 
-1. **¿Qué hace `upgrade()`?**  
-   Aplica los cambios de la migración a la base de datos (crea tablas, columnas, restricciones)
+class Comment(Base):
+    __tablename__ = "comments"
+    id = Column(Integer, primary_key=True)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, server_default=func.current_timestamp())
+    task_id = Column(Integer, ForeignKey("tasks.id", ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    task = relationship("Task", back_populates="comments")
+    user = relationship("User", back_populates="comments")
+    __table_args__ = (CheckConstraint("LENGTH(content) > 0", name="check_content_not_empty"),)
 
-2. **¿Qué hace `downgrade()`?**  
-   Revierte la migración (elimina tablas, columnas, restricciones)
+Task.comments = relationship("Comment", back_populates="task", cascade="all, delete-orphan")
+User.comments = relationship("Comment", back_populates="user")
 
-3. **¿Qué pasa al revertir esta migración?**  
-   La tabla `comments` se elimina y todos sus datos se pierden
+from alembic import command
+import glob, os
 
-## Ejercicio 3: Preguntas
+for f in glob.glob('/content/alembic/versions/*.py'):
+    os.remove(f)
 
-**Flujo del código:**
-- Crea un equipo → Crea un usuario → Crea 3 tareas → Cuenta 3 tareas → Cierra tarea1 → Elimina tarea3
+command.revision(alembic_cfg, autogenerate=True, message="add comments table")
 
-## Ejercicio 4: Preguntas
+migration_files = sorted(glob.glob('/content/alembic/versions/*.py'))
+with open(migration_files[-1]) as f:
+    print(f.read())
 
-1. La columna se elimina del esquema
-2. Los datos se pierden permanentemente
+command.upgrade(alembic_cfg, 'head')
+print("Migration applied")
+```
 
-## Ejercicio 5: Preguntas
+**Answers:**
+1. `upgrade()` applies schema changes to the database
+2. `downgrade()` reverts the migration
+3. Downgrading drops the comments table and all its data
 
-1. **¿Por qué ORM en lugar de SQL?**  
-   Trabajar con objetos Python en lugar de SQL manual. Beneficios: código limpio, fácil mantenimiento, portabilidad, relaciones automáticas
+## Exercise 3: CRUD Challenge
 
-2. **¿Por qué migraciones?**  
-   Gestionan cambios del esquema de forma segura. Permiten: control de versiones, rollback, sincronización en equipo
+```python
+from sqlalchemy import func
+from datetime import datetime
 
-3. **¿Cuándo hacer rollback?**  
-   Cuando una migración tiene errores o el despliegue falla
+with Session(engine) as session:
+    devops_team = Team(name="DevOps", description="Infrastructure team")
+    session.add(devops_team)
+    session.flush()
+    
+    diana = User(username="diana_ops", email="diana@example.com", full_name="Diana Ops", team_id=devops_team.id)
+    session.add(diana)
+    session.flush()
+    
+    tasks = [
+        Task(title="Fix CI pipeline", description="Priority: high", status="open", assigned_to=diana.id),
+        Task(title="Update config", description="Priority: medium", status="in_progress", assigned_to=diana.id),
+        Task(title="Optimize builds", description="Priority: low", status="open", assigned_to=diana.id)
+    ]
+    for task in tasks:
+        session.add(task)
+    session.commit()
+    
+    task_count = session.query(Task).filter(Task.assigned_to == diana.id).count()
+    print(f"Task count: {task_count}")
+    
+    tasks[0].status = "closed"
+    
+    low_task = session.query(Task).filter(Task.assigned_to == diana.id, Task.description == "Priority: low").first()
+    if low_task:
+        session.delete(low_task)
+    session.commit()
+    
+    remaining = session.query(Task).filter(Task.assigned_to == diana.id).all()
+    print(f"Remaining tasks: {len(remaining)}")
+```
 
-4. **Diferencia entre `add()` y `commit()`**  
-   `add()` prepara objetos en la sesión. `commit()` guarda permanentemente en la BD
+## Exercise 4: Migration Rollback
 
-5. **¿Por qué útiles las relaciones?**  
-   Permiten navegar entre objetos relacionados sin escribir JOIN manualmente
+```python
+class Team(Base):
+    __tablename__ = "teams"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False, unique=True)
+    description = Column(String(200))
+    created_at = Column(DateTime, server_default=func.current_timestamp())
+    users = relationship("User", back_populates="team")
+    priority = Column(String(20), default='medium')
+    due_date = Column(DateTime)
+    tags = Column(String(500))
+    estimated_hours = Column(Integer, default=0)
+
+command.revision(alembic_cfg, autogenerate=True, message="add estimated_hours column")
+command.upgrade(alembic_cfg, 'head')
+print("Column added")
+
+command.downgrade(alembic_cfg, "-1")
+print("Rollback complete - column removed")
+```
+
+**Answers:**
+1. The column is removed from the schema
+2. All data in that column is permanently lost
+
+## Exercise 5: Concept Check
+
+**Answers:**
+
+1. ORM allows working with Python objects instead of writing raw SQL, providing cleaner code, easier maintenance, and automatic relationship handling.
+
+2. Migrations manage schema changes safely with version control, rollback capability, and team synchronization.
+
+3. Rollback when a migration contains errors or a deployment fails.
+
+4. `add()` prepares objects in the session memory. `commit()` permanently saves to the database.
+
+5. Relationships allow navigation between related objects without writing manual JOIN statements.
+```
